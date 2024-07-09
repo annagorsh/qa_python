@@ -1,24 +1,54 @@
-from main import BooksCollector
-
-# класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
-# обязательно указывать префикс Test
 class TestBooksCollector:
 
-    # пример теста:
-    # обязательно указывать префикс test_
-    # дальше идет название метода, который тестируем add_new_book_
-    # затем, что тестируем add_two_books - добавление двух книг
-    def test_add_new_book_add_two_books(self):
-        # создаем экземпляр (объект) класса BooksCollector
-        collector = BooksCollector()
+    def test_init_success(self, collector):
+        assert collector.books_genre == {}
+        assert collector.favorites == []
+        assert collector.genre == ['Фантастика', 'Ужасы', 'Детективы', 'Мультфильмы', 'Комедии']
+        assert collector.genre_age_rating == ['Ужасы', 'Детективы']
 
-        # добавляем две книги
-        collector.add_new_book('Гордость и предубеждение и зомби')
-        collector.add_new_book('Что делать, если ваш кот хочет вас убить')
+    def test_add_new_book_book_added(self,collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        assert "Магистр дьявольского культа" in collector.books_genre
 
-        # проверяем, что добавилось именно две
-        # словарь books_rating, который нам возвращает метод get_books_rating, имеет длину 2
-        assert len(collector.get_books_rating()) == 2
+    def test_set_book_genre_genre_is_set(self, collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.set_book_genre("Магистр дьявольского культа", "Фантастика")
+        assert collector.books_genre["Магистр дьявольского культа"] == "Фантастика"
 
-    # напиши свои тесты ниже
-    # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
+    def test_get_book_genre_shows_genre(self, collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.set_book_genre("Магистр дьявольского культа", "Фантастика")
+        assert collector.get_book_genre("Магистр дьявольского культа") == "Фантастика"
+
+    def test_get_books_with_specific_genre_shows_books(self, collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.set_book_genre("Магистр дьявольского культа", "Фантастика")
+        collector.add_new_book("Благие знамения")
+        collector.set_book_genre("Благие знамения", "Комедии")
+        assert collector.get_books_with_specific_genre("Фантастика") == ["Магистр дьявольского культа"]
+
+    def test_get_books_genre_is_dict(self, collector):
+        assert collector.books_genre == {}
+
+    def test_get_books_for_children_returns_safe_books(self,collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.set_book_genre("Магистр дьявольского культа", "Фантастика")
+        collector.add_new_book("Токийский зодиак")
+        collector.set_book_genre("Токийский зодиак", "Детективы")
+        collector.add_new_book("Мизери")
+        collector.set_book_genre("Мизери", "Ужасы")
+        assert "Мизери", "Токийский зодиак" not in collector.get_books_for_children()
+
+    def test_add_book_in_favorites_is_added(self, collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.add_book_in_favorites("Магистр дьявольского культа")
+        assert "Магистр дьявольского культа" in collector.favorites
+
+    def test_delete_book_from_favorites_is_deleted(self, collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.add_book_in_favorites("Магистр дьявольского культа")
+        collector.delete_book_from_favorites("Магистр дьявольского культа")
+        assert len(collector.favorites) == 0
+
+    def test_get_list_of_favorites_books_returns_favorites(self, collector):
+        assert collector.get_list_of_favorites_books() == collector.favorites
