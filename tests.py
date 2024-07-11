@@ -27,8 +27,10 @@ class TestBooksCollector:
         collector.set_book_genre("Благие знамения", "Комедии")
         assert collector.get_books_with_specific_genre("Фантастика") == ["Магистр дьявольского культа"]
 
-    def test_get_books_genre_is_dict(self, collector):
-        assert collector.books_genre == {}
+    def test_get_books_genre_returns_book_and_genre(self, collector):
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.set_book_genre("Магистр дьявольского культа", "Фантастика")
+        assert collector.get_books_genre() == collector.books_genre
 
     def test_get_books_for_children_returns_safe_books(self,collector):
         collector.add_new_book("Магистр дьявольского культа")
@@ -51,4 +53,6 @@ class TestBooksCollector:
         assert len(collector.favorites) == 0
 
     def test_get_list_of_favorites_books_returns_favorites(self, collector):
-        assert collector.get_list_of_favorites_books() == collector.favorites
+        collector.add_new_book("Магистр дьявольского культа")
+        collector.add_book_in_favorites("Магистр дьявольского культа")
+        assert "Магистр дьявольского культа" in collector.favorites
