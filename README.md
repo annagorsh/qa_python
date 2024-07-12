@@ -14,7 +14,7 @@
 - test_set_book_genre_genre_is_set проверяет, получилось ли задать жанр книге
 - test_get_book_genre_shows_genre проверяет, можно ли по названию книги получить её жанр
 - test_get_books_with_specific_genre_shows_books проверяет, можно ли получить книги конкретного жанра по его названию
-- test_get_books_genre_is_dict проверяет,является ли словарь книг и жанров словарём
+- test_get_books_genre_is_dict проверяет, что метод get_books_genre возвращает словарь books_genre
 - test_get_books_for_children_returns_safe_books проверяет, возвращает ли метод книги не относящиесяк жанрам "Детективы" и "Ужасы"
 - test_add_book_in_favorites_is_added проверяет успешное добавление книги в избранное по названию
 - test_delete_book_from_favorites_is_deleted проверяет успешное удаление книги из избранного
